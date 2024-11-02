@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBD DEV Apps | Text Edit Plus</title>
+    <script src="https://kit.fontawesome.com/0ca27f8db1.js" crossorigin="anonymous"></script>
+<link rel="icon" type="image/x-icon" href="https://dev.cdn.madebydanny.uk/MBDTeamLogobyDesigner.png">
+
+    <style>
+        body { display: flex; height: 100vh; margin: 0; }
+        #toolbar { padding: 10px; background-color: #f0f0f0; border-left: 1px solid #ddd; display: flex; flex-direction: column; align-items: center; position: fixed; right: 0; top: 0; height: 100vh; width: 120px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; }
+        #editor { flex-grow: 1; padding: 10px; border: none; outline: none; margin-right: 60px; overflow: auto; }
+        .button { margin: 10px 0; background-color: #fff; border: 1px solid #ccc; border-radius: 5px; padding: 5px; cursor: pointer; }
+        .button:hover { background-color: #eaeaea; }
+        select, input[type="color"] { margin: 10px 0; width: 50px; }
+        p{
+            text-align: center;
+        }
+        a{
+            text-align: center;
+            color: black;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <a><b>MBD<br>Text Edit plus</b><br>PWA By MBD<br>V2.0[Stable]</a>
+        <a href="https://apps.madebydanny.uk">DEV Apps Home</a>
+        <a href="https://code-edit.madebdyanny.uk">Switch to code editor</a>
+        <button class="button" onclick="execCmd('bold')"><i class="fa-solid fa-bold"></i><b>Bold</b></button>
+        <button class="button" onclick="execCmd('italic')"><i>Italic</i></button>
+        <button class="button" onclick="execCmd('underline')"><u>Underline</u></button>
+        <button class="button" onclick="execCmd('justifyLeft')">Left</button>
+        <button class="button" onclick="execCmd('justifyCenter')">Center</button>
+        <button class="button" onclick="execCmd('justifyRight')">Right</button>
+        <button class="button" onclick="document.getElementById('imageInput').click()">Image</button>
+        <input type="file" id="imageInput" style="display: none;" onchange="insertImage(event)">
+        <select onchange="execCmd('fontName', this.value)">
+            <option value="Arial">Arial</option>
+            <option value="Courier New">Courier</option>
+            <option value="Times New Roman">Times</option>
+        </select>
+        <select onchange="execCmd('fontSize', this.value)">
+            <option value="1">10px</option>
+            <option value="2">13px</option>
+            <option value="3">16px</option>
+            <option value="4">18px</option>
+            <option value="5">24px</option>
+            <option value="6">32px</option>
+            <option value="7">48px</option>
+        </select>
+        <input type="color" onchange="execCmd('foreColor', this.value)">
+        <button class="button" onclick="insertLink()">Link</button>
+        <button class="button" onclick="highlightText()">Highlight</button>
+        <button class="button" onclick="insertTable()">Table</button>
+        <button class="button" onclick="copyText()">Copy Text</button>
+        <button class="button" onclick="clearText()">Clear Document</button>
+        <button class="button" onclick="saveHTML()">Save</button>
+        <a>Code is under MIT licence <br> Code is Open Source</a>
+        <a href="https://github.com">Open Github Repo</a>
+    </div>
+    <div id="editor" contenteditable="true"></div>
+    <script>
+            function saveHTML() { const editorContent = document.getElementById('editor').innerHTML; const blob = new Blob([editorContent], { type: "text/html;charset=utf-8" }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = "text-edit-plus|documnet.html"; link.click(); }
+
+        function insertImage(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                document.execCommand('insertHTML', false, img.outerHTML);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function insertLink() {
+            const url = prompt("Enter the URL");
+            if (url) {
+                document.execCommand('createLink', false, url);
+            }
+        }
+
+        function insertTable() {
+            const rows = prompt("Enter the number of rows");
+            const cols = prompt("Enter the number of columns");
+            if (rows && cols) {
+                let table = '<table border="1">';
+                for (let i = 0; i < rows; i++) {
+                    table += '<tr>';
+                    for (let j = 0; j < cols; j++) {
+                        table += '<td>&nbsp;</td>';
+                    }
+                    table += '</tr>';
+                }
+                table += '</table>';
+                document.execCommand('insertHTML', false, table);
+            }
+        }
+
+        function highlightText() {
+            const color = prompt("Enter the highlight color (e.g., yellow, pink)");
+            if (color) {
+                document.execCommand('hiliteColor', false, color);
+            }
+        }
+
+        function copyText() {
+            const editor = document.getElementById('editor');
+            const range = document.createRange();
+            range.selectNodeContents(editor);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            alert('Text copied to clipboard');
+        }
+
+        function clearText() {
+            const editor = document.getElementById('editor');
+            editor.innerHTML = '';
+        }
+
+        window.addEventListener('beforeunload', function (e) {
+            const confirmationMessage = 'You have unsaved changes. Are you sure you want to leave?';
+            e.returnValue = confirmationMessage;
+            return confirmationMessage;
+        });
+        
+    </script>
+</body>
+</html>

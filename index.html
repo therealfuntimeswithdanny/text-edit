@@ -1,495 +1,58 @@
-<html>
-    <title>Text Editor | MBD DEV APPS</title>
-    <script src="https://kit.fontawesome.com/0ca27f8db1.js" crossorigin="anonymous"></script>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" type="image/x-icon" href="https://apps.madebydanny.uk/text-edit/icon.png">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<style>
-        .dark-mode{
-            background-color: black;
-            color: white;
-        }
-        .dark-mode .editor{
-            border:solid 1px black;
-			padding: 20px;
-			min-height:200px;
-            font-size: 15px;
-        }
-		.editor
-        {
-			border:solid 1px #ccc;
-			padding: 20px;
-			min-height:200px;
-            background-color: #ddd;
-        }
-.red {
-    color: red;
-}
-.blue {
-    color: blue;
-}
-.white {
-    color: white;
-}
-.pink {
-    color: pink;
-}
-.green {
-    color: green;
-}
-        .text-right .editor{
-            text-align: right;
-        }
-        .text-left .editor{
-            text-align: left;
-        }
-        .text-cenetr .editor{
-            text-align: center;
-        }
-        .times-serif .editor {
-  font-family: "Times New Roman", Times, serif;
-}
-
-.sans-serif .editor {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.monospace .editor{
-  font-family: "Lucida Console", "Courier New", monospace;
-}
-        .sample-toolbar
-        {
-			border:solid 1px #ddd;
-			background:#f4f4f4;
-			padding: 5px;
-			border-radius:3px;
-            color: black;
-        }
-
-        .sample-toolbar > span
-        {
-			cursor:pointer;
-		}
-
-        .sample-toolbar > span:hover
-        {
-			text-decoration:underline;
-		}
-        .dropdown {
-  position: relative;
-  display: inline-block;
-  color: blue;
-  text-decoration:underline;
-}
-.dark-mode .dropdown {
-  position: relative;
-  display: inline-block;
-  color: black;
-  text-decoration:underline;
-}
- a{
-  color: blue;
-}
-.dark-mode .sample-toolbar a {
- color: black ;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-.highlight {
-            background-color: yellow;
-        }
-        .aj{
-      text-decoration: line-through;
-}
-.ex {
-  text-decoration: underline;
-}
-</style>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
 </head>
-<h1>MBD Text Editor</h1>
-<p>Version: 1.0 | Project is open source</p>
-<p>This site will access your local disk.</p>
-<p><a href="https://apps.madebydanny.uk">MBD DEV APPS</a> | <a href="https://apps.madebydanny.uk">View on GitHub</a> | <a href="https://cloudlfare.com">Secured By Cloudflare</a> | <a href="https://cdn.madebydanny.uk">Powerd By MBD CDN</a></p>
-<hr>
-<h3>How to save/copy text</h3>
-<p>Step 1: CTRL+A Step 2: Save/Copy Text</p>
-<hr>
+<style>
+    body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#loading-screen {
+    text-align: center;
+}
+
+#loading-image {
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+</style>
 <body>
-	<div class="sample-toolbar">
-		<a href="javascript:void(0)" onclick="format('bold')"><span class="fa fa-bold fa-fw"></span>Bold</a>
-		<a href="javascript:void(0)" onclick="format('italic')"><span class="fa fa-italic fa-fw"></span>Italic</a>
-		<a href="javascript:void(0)" onclick="format('insertunorderedlist')"><span class="fa fa-list fa-fw"></span>List</a>
-		<a href="javascript:void(0)" onclick="setUrl()"><span class="fa fa-link fa-fw"></span>Add Link(s)</a>
-		<span><input id="txtFormatUrl" placeholder="url" class="form-control"></span>
-        <a> | </a>
-        <a><b>Tools</b></a>
-        <a  href="javascript:void(0)" onclick="myFunction1()"><i class="fa-solid fa-circle-half-stroke"></i>Dark Mode</a>
-        <a href="index.html"><span class="fa fa-eraser fa-fw"></span>Clear</a>
-        <a href="index.html"><span class="fa fa-eraser fa-fw"></span>Reset</a>
-        <a href="https://apps.madebydanny.uk/code-edit/index.html">Switch to Code Edit</a>
-        <a> | </a>
-        <a><b>Color</b></a>
-        <div class="dropdown">
-            <span>Text Color</span>
-            <div class="dropdown-content">
-              <a  href="javascript:void(0)" onclick="red()">Red</a>
-              <a  href="javascript:void(0)" onclick="blue()">Blue</a>
-              <a  href="javascript:void(0)" onclick="white()">White</a>
-              <a  href="javascript:void(0)" onclick="pink()">Pink</a>
-              <a  href="javascript:void(0)" onclick="green()">Green</a>
-              <a  href="javascript:void(0)" onclick="ajh()">Rest to default[black]</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <span>Highlight Text</span>
-            <div class="dropdown-content">
-                <button onclick="highlightText()">Highlight Selected Text</button>
-                <button onclick="removeHighlight()">Remove Highlight</button>
-            </div>
-        </div>
-        <br>
-        <a><b>Text Tools</b></a>
-        <div class="dropdown">
-            <span>Text Size</span>
-            <div class="dropdown-content">
-                <a  href="javascript:void(0)" onclick="changeFontSizesmall()">Small</a>
-                <a  href="javascript:void(0)" onclick="changeFontSizenorm()">Normal</a>
-                <a  href="javascript:void(0)" onclick="changeFontSizebig()">Big</a>
-                <a  href="javascript:void(0)" onclick="changeFontSizeXL()">XL</a>
-            </div>
-        </div>
-        <a>  </a>
-        <div class="dropdown">
-            <span>Text Align</span>
-            <div class="dropdown-content">
-                <a  href="javascript:void(0)" onclick="right()">Right</a>
-                <a  href="javascript:void(0)" onclick="left()">Left</a>
-                <a  href="javascript:void(0)" onclick="center()">Center</a>
-            </div>
-        </div>
-        <a> </a>
-        <div class="dropdown">
-            <span>Font</span>
-            <div class="dropdown-content">
-                <a  href="javascript:void(0)" onclick="m1()">Times New Roman</a>
-                <a  href="javascript:void(0)" onclick="m2()">Arial</a>
-                <a  href="javascript:void(0)" onclick="m3()">Lucida Console</a>
-            </div>
-        </div>
-        <a> </a>
-        <div class="dropdown">
-            <span> Text Decoration</span>
-            <div class="dropdown-content">
-                <a><button onclick="aj()">Line Through</button></a>
-                <a><button onclick="ajh()">Remove Spaceing</button></a>
-                <a><button onclick="ex()">Underline</button></a>
-            </div>
-        </div>
-        <a><b>File Tools</b></a>
-        <a><button onclick="copySelectedText()">Copy Text</button></a>
-        <button onclick="saveSelectedText()">Save As Text File</button>
-        <input type="file" id="fileInput">
-<button onclick="uploadFile()">Upload File</button>
-
-
-</div>
-
-<div class="editor" id="sampleeditor">
-    <pre id="fileContents"></pre>
-    <img id="uploadedImage" style="max-width: 100%; height: auto;">
-	</div>
-
-	<script>
-                            function aj() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'aj';
-                range.surroundContents(span);
-            }
-        }
-                function ajh() {
-            const highlightedElements = document.querySelectorAll('.aj,.ex ');
-            highlightedElements.forEach(span => {
-                const parent = span.parentNode;
-                while (span.firstChild) {
-                    parent.insertBefore(span.firstChild, span);
-                }
-                parent.removeChild(span);
-            });
-        }
-        
-        function ex() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'ex';
-                range.surroundContents(span);
-            }
-        }
-		window.addEventListener('load', function(){
-			document.getElementById('sampleeditor').setAttribute('contenteditable', 'true');
-			document.getElementById('sampleeditor2').setAttribute('contenteditable', 'true');
-        });
-
-		function format(command, value) {
-			document.execCommand(command, false, value);
-		}
-
-		function setUrl() {
-			var url = document.getElementById('txtFormatUrl').value;
-			var sText = document.getSelection();
-			document.execCommand('insertHTML', false, '<a href="' + url + '" target="_blank">' + sText + '</a>');
-			document.getElementById('txtFormatUrl').value = '';
-		}
-        
-	</script>
+    <div id="loading-screen">
+        <img id="loading-image" src="https://mbduk-cdn.madebydanny.uk/a28a3c50-3e92-47f6-adea-b62eccd07ecd.png" alt="Loading...">
+        <h3>Loading MBD Text Edit Plus</h3>
+        <p id="loading-text">Loading PWA</p>
+    </div>
     <script>
-                function highlightText() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'highlight';
-                range.surroundContents(span);
-            }
-        }
+        const loadingText = document.getElementById('loading-text');
+const messages = ['Loading PWA', 'Loading CSS files', 'Loading Javascript', 'Loading HTML files', 'Connecting To MBD CDN'];
+let messageIndex = 0;
 
-        function removeHighlight() {
-            const highlightedElements = document.querySelectorAll('.highlight');
-            highlightedElements.forEach(span => {
-                const parent = span.parentNode;
-                while (span.firstChild) {
-                    parent.insertBefore(span.firstChild, span);
-                }
-                parent.removeChild(span);
-            });
-        }
-        function myFunction1() {
-   var element = document.body;
-   element.classList.toggle("dark-mode");
+function changeText() {
+    loadingText.textContent = messages[messageIndex];
+    messageIndex = (messageIndex + 1) % messages.length;
 }
 
-function changeFontSizebig() {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    const span = document.createElement('span');
-    span.style.fontSize = '20px'; // Adjust the font size as needed
-    range.surroundContents(span);
-  }
-function changeFontSizenorm() {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    const span = document.createElement('span');
-    span.style.fontSize = '15px'; // Adjust the font size as needed
-    range.surroundContents(span);
-  }
-  function changeFontSizeXL() {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    const span = document.createElement('span');
-    span.style.fontSize = '25px'; // Adjust the font size as needed
-    range.surroundContents(span);
-  }
-function changeFontSizesmall() {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    const span = document.createElement('span');
-    span.style.fontSize = '10px'; // Adjust the font size as needed
-    range.surroundContents(span);
-  }
-function black() {
-   var element = document.body;
-   element.classList.toggle("text-black");
-}
-function white() {
-   var element = document.body;
-   element.classList.toggle("text-white");
-}
-function red() {
-   var element = document.body;
-   element.classList.toggle("text-red");
-}
-function blue() {
-   var element = document.body;
-   element.classList.toggle("text-blue");
-}
-function pink() {
-   var element = document.body;
-   element.classList.toggle("text-pink");
-}
-function green() {
-   var element = document.body;
-   element.classList.toggle("text-green");
-}
-function left() {
-   var element = document.body;
-   element.classList.toggle("text-left");
-}
-function center() {
-   var element = document.body;
-   element.classList.toggle("text-center");
-}
-function right() {
-   var element = document.body;
-   element.classList.toggle("text-right");
-}
-function m1() {
-   var element = document.body;
-   element.classList.toggle("times-serif");
-}
-function m2() {
-   var element = document.body;
-   element.classList.toggle("sans-serif");
-}
-function m3() {
-   var element = document.body;
-   element.classList.toggle("monospace");
-}
-</script>
+setInterval(changeText, 700);
+
+setTimeout(() => {
+    window.location.href = 'https://text-edit.madebydanny.uk/text-edit.html';
+}, 5000);
+
+    </script>
 </body>
-<script>
-    if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js', { scope: '/' });
-    }
-</script>
-<script>
-    window.addEventListener('beforeunload', function (e) {
-  var message = "Are you sure you want to leave? Your file wont be saved";
-  e.returnValue = message; // Standard for most browsers
-  return message;          // For some older browsers
-});
-
-</script>
-<script>
-  function savePageContent() {
-    const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'page.html';
-    link.click();
-  }
-</script>
-<script>
-      function saveSelectedText() {
-        const selectedText = window.getSelection().toString();
-        if (selectedText) {
-          const blob = new Blob([selectedText], { type: 'text/html' });
-          const link = document.createElement('a');
-          link.href = URL.createObjectURL(blob);
-          link.download = 'selected_text.docx';
-          link.click();
-        } else {
-          alert('No text selected.');
-        }
-      }
-</script>
-<script>
-    function uploadImage() {
-      const input = document.getElementById('fileInput');
-      const file = input.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = document.getElementById('uploadedImage');
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        alert('No file selected.');
-      }
-    }
-  </script>
-<script>
-    function uploadFile() {
-      const input = document.getElementById('fileInput');
-      const file = input.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const contents = e.target.result;
-          document.getElementById('fileContents').textContent = contents;
-        };
-        reader.readAsText(file);
-      } else {
-        alert('No file selected.');
-      }
-    }
-    function red() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'red';
-                range.surroundContents(span);
-            }
-        }
-                            function blue() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'blue';
-                range.surroundContents(span);
-            }
-        }
-                                    function white() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'white';
-                range.surroundContents(span);
-            }
-        }
-                                    function pink() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'pink';
-                range.surroundContents(span);
-            }
-        }
-                                    function green() {
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const span = document.createElement('span');
-                span.className = 'green';
-                range.surroundContents(span);
-            }
-        }
-                function ajh() {
-            const highlightedElements = document.querySelectorAll('.red, .blue, .white, .pink, .green');
-            highlightedElements.forEach(span => {
-                const parent = span.parentNode;
-                while (span.firstChild) {
-                    parent.insertBefore(span.firstChild, span);
-                }
-                parent.removeChild(span);
-            });
-        }
-  </script>
-    
-<script> function copySelectedText() { const selectedText = window.getSelection().toString(); if (selectedText) { navigator.clipboard.writeText(selectedText).then(function() { alert('Copied to clipboard!'); }, function(err) { alert('Failed to copy text.'); }); } else { alert('No text selected.'); } } </script>
 </html>
-    
