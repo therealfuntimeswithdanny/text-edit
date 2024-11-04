@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBD Calculate</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* styles.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    font-family: 'Arial', sans-serif;
+}
+
+.calculator {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.calculator-screen {
+    width: 100%;
+    height: 80px;
+    border: none;
+    background-color: #252525;
+    color: #fff;
+    text-align: right;
+    padding-right: 20px;
+    padding-left: 10px;
+    font-size: 2.5em;
+}
+
+button {
+    height: 60px;
+    font-size: 2em;
+}
+
+.operator {
+    background-color: #ff9500;
+    color: white;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.calculator-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+button:hover {
+    opacity: 0.9;
+}
+button:active {
+    box-shadow: inset 0 0 5px #000;
+}
+.calculator-history {
+    background-color: #f9f9f9;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+</style>
+<body>
+    <div class="calculator-history"></div>
+    <div class="calculator">
+        <input type="text" class="calculator-screen" disabled>
+        <div class="calculator-keys">
+            <button type="button" class="operator" value="+">+</button>
+            <button type="button" class="operator" value="-">-</button>
+            <button type="button" class="operator" value="*">&times;</button>
+            <button type="button" class="operator" value="/">&divide;</button>
+
+            <button type="button" value="7">7</button>
+            <button type="button" value="8">8</button>
+            <button type="button" value="9">9</button>
+
+            <button type="button" value="4">4</button>
+            <button type="button" value="5">5</button>
+            <button type="button" value="6">6</button>
+
+            <button type="button" value="1">1</button>
+            <button type="button" value="2">2</button>
+            <button type="button" value="3">3</button>
+
+            <button type="button" value="0">0</button>
+            <button type="button" class="decimal" value=".">.</button>
+            <button type="button" class="all-clear" value="all-clear">AC</button>
+            <button type="button" class="memory-save" value="MS">MS</button>
+            <button type="button" class="memory-recall" value="MR">MR</button>
+
+            <button type="button" class="equal-sign operator" value="=">=</button>
+        </div>
+    </div>
+    <script>
+        let memory = 0;
+
+function saveMemory() {
+    memory = parseFloat(calculator.displayValue);
+}
+
+function recallMemory() {
+    calculator.displayValue = memory.toString();
+    updateDisplay();
+}
+
+document.querySelector('.memory-save').addEventListener('click', saveMemory);
+document.querySelector('.memory-recall').addEventListener('click', recallMemory);
+
+        const history = [];
+
+function updateDisplay() {
+    const display = document.querySelector('.calculator-screen');
+    display.value = calculator.displayValue;
+
+    const historyDisplay = document.querySelector('.calculator-history');
+    historyDisplay.innerHTML = history.join('<br>');
+}
+
+function handleOperator(nextOperator) {
+    const { firstOperand, displayValue, operator } = calculator;
+    const inputValue = parseFloat(displayValue);
+
+    if (operator && calculator.waitingForSecondOperand) {
+        calculator.operator = nextOperator;
+        return;
+    }
+
+    if (firstOperand == null && !isNaN(inputValue)) {
+        calculator.firstOperand = inputValue;
+    } else if (operator) {
+        const result = calculate(firstOperand, inputValue, operator);
+        calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
+        calculator.firstOperand = result;
+
+        history.push(`${firstOperand} ${operator} ${inputValue} = ${result}`);
+    }
+
+    calculator.waitingForSecondOperand = true;
+    calculator.operator = nextOperator;
+}
+
+        document.addEventListener('keydown', (event) => {
+    const { key } = event;
+    if (key >= 0 && key <= 9) {
+        inputDigit(key);
+    } else if (key === '.') {
+        inputDecimal(key);
+    } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+        handleOperator(key);
+    } else if (key === 'Enter' || key === '=') {
+        handleOperator('=');
+    } else if (key === 'Escape') {
+        resetCalculator();
+    }
+    updateDisplay();
+});
+
+        // script.js
+const calculator = {
+    displayValue: '0',
+    firstOperand: null,
+    waitingForSecondOperand: false,
+    operator: null,
+};
+
+function inputDigit(digit) {
+    const { displayValue, waitingForSecondOperand } = calculator;
+
+    if (waitingForSecondOperand === true) {
+        calculator.displayValue = digit;
+        calculator.waitingForSecondOperand = false;
+    } else {
+        calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+    }
+}
+
+function inputDecimal(dot) {
+    if (calculator.waitingForSecondOperand === true) return;
+
+    if (!calculator.displayValue.includes(dot)) {
+        calculator.displayValue += dot;
+    }
+}
+
+function handleOperator(nextOperator) {
+    const { firstOperand, displayValue, operator } = calculator
+    const inputValue = parseFloat(displayValue);
+
+    if (operator && calculator.waitingForSecondOperand)  {
+        calculator.operator = nextOperator;
+        return;
+    }
+
+    if (firstOperand == null && !isNaN(inputValue)) {
+        calculator.firstOperand = inputValue;
+    } else if (operator) {
+        const result = calculate(firstOperand, inputValue, operator);
+
+        calculator.displayValue = `${parseFloat(result.toFixed(7))}`;
+        calculator.firstOperand = result;
+    }
+
+    calculator.waitingForSecondOperand = true;
+    calculator.operator = nextOperator;
+}
+
+function calculate(firstOperand, secondOperand, operator) {
+    if (operator === '+') {
+        return firstOperand + secondOperand;
+    } else if (operator === '-') {
+        return firstOperand - secondOperand;
+    } else if (operator === '*') {
+        return firstOperand * secondOperand;
+    } else if (operator === '/') {
+        return firstOperand / secondOperand;
+    }
+
+    return secondOperand;
+}
+
+function resetCalculator() {
+    calculator.displayValue = '0';
+    calculator.firstOperand = null;
+    calculator.waitingForSecondOperand = false;
+    calculator.operator = null;
+}
+
+function updateDisplay() {
+    const display = document.querySelector('.calculator-screen');
+    display.value = calculator.displayValue;
+}
+
+updateDisplay();
+
+const keys = document.querySelector('.calculator-keys');
+keys.addEventListener('click', (event) => {
+    const { target } = event;
+    const { value } = target;
+
+    if (!target.matches('button')) {
+        return;
+    }
+
+    switch (value) {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '=':
+            handleOperator(value);
+            break;
+        case '.':
+            inputDecimal(value);
+            break;
+        case 'all-clear':
+            resetCalculator();
+            break;
+        default:
+            if (Number.isInteger(parseFloat(value))) {
+                inputDigit(value);
+            }
+    }
+
+    updateDisplay();
+});
+
+    </script>
+</body>
+</html>

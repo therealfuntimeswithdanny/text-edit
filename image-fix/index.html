@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Image Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="editor-container">
+        <input type="file" id="upload" accept="image/*">
+        <canvas id="canvas"></canvas>
+        <div class="controls">
+            <div class="section">
+                <button id="rotate">Rotate</button>
+                <button id="grayscale">Grayscale</button>
+                <button id="reset">Reset</button>
+                <button id="save">Save</button>
+                <button id="remove">Remove</button>
+            </div>
+            <div class="section">
+                <label for="brightness">Brightness:</label>
+                <input type="range" id="brightness" min="0" max="200" value="100">
+                <label for="saturation">Saturation:</label>
+                <input type="range" id="saturation" min="0" max="200" value="100">
+                <label for="contrast">Contrast:</label>
+                <input type="range" id="contrast" min="0" max="200" value="100">
+            </div>
+            <div class="section">
+                <label for="text">Text:</label>
+                <input type="text" id="text" placeholder="Enter text">
+                <button id="addText">Add Text</button>
+                <button id="moveText">Move Text</button>
+            </div>
+            <div class="section">
+                <button id="crop">Crop</button>
+                <button id="draw">Draw</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

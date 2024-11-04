@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
+</head>
+<style>
+    body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#loading-screen {
+    text-align: center;
+}
+
+#loading-image {
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+</style>
+<body>
+    <div id="loading-screen">
+        <img id="loading-image" src="https://mbduk-cdn.madebydanny.uk/a28a3c50-3e92-47f6-adea-b62eccd07ecd.png" alt="Loading...">
+        <h3>Loading MBD Text Edit Plus</h3>
+        <p id="loading-text">Loading PWA</p>
+    </div>
+    <script>
+        const loadingText = document.getElementById('loading-text');
+const messages = ['Loading PWA', 'Loading CSS files', 'Loading Javascript', 'Loading HTML files', 'Connecting To MBD CDN'];
+let messageIndex = 0;
+
+function changeText() {
+    loadingText.textContent = messages[messageIndex];
+    messageIndex = (messageIndex + 1) % messages.length;
+}
+
+setInterval(changeText, 700);
+
+setTimeout(() => {
+    window.location.href = 'https://apps.madebydanny.uk/v2-text/v2.html';
+}, 5000);
+
+    </script>
+</body>
+</html>
