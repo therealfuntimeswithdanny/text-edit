@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBD DEV Code Edit | Monaco Editor</title>
+    <link rel="icon" type="image/x-icon" href="https://dev.cdn.madebydanny.uk/MBDTeamLogobyDesigner.png">
+    <script src="https://kit.fontawesome.com/0ca27f8db1.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #editor {
+            width: 100%;
+            height: 45%;
+            box-sizing: border-box;
+        }
+        #outputArea {
+            width: 100%;
+            height: 45%;
+            border-top: 1px solid #000;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            background-color: black;
+            color: white;
+        }
+        #controls a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs' }});
+        window.MonacoEnvironment = { getWorkerUrl: function(workerId, label) { return `data:text/javascript;charset=utf-8,${encodeURIComponent(`self.MonacoEnvironment = { baseUrl: 'https://cdn.jsdelivr.net/npm/monaco-editor/min/' }; importScripts('https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/base/worker/workerMain.js');`)}`; }};
+    </script>
+</head>
+<body>
+    <div id="controls">
+        <a href="https://apps.madebydanny.uk">Home</a>
+        <a href="index.html">Clear</a>
+        <a> Powerd By Monaco Editor</a>
+        <a> This project is open source</a>
+        <a href="https://github.com">Open GitHub Repo</a>
+        <a>By MBD DEV</a>
+        <a href="https://apps.madebydanny.uk/text-edit/index.html">Switch To Text Edit</a>
+        <input type="file" id="fileInput" accept=".html,.css,.js">
+        <button onclick="uploadFile()">Upload File</button>
+        <button onclick="saveFile()">Save File</button>
+    </div>
+    <div id="editor"></div>
+    <div id="outputArea">
+        <iframe id="outputFrame"></iframe>
+    </div>
+
+    <script>
+        require(['vs/editor/editor.main'], function() {
+            const editor = monaco.editor.create(document.getElementById('editor'), {
+                value: localStorage.getItem('code') || '<h1>Hello, world!</h1>',
+                language: 'html',
+                theme: 'vs-dark'
+            });
+
+            editor.onDidChangeModelContent(function() {
+                const code = editor.getValue();
+                localStorage.setItem('code', code);
+                const outputFrame = document.getElementById('outputFrame');
+                const output = outputFrame.contentDocument || outputFrame.contentWindow.document;
+                output.open();
+                output.write(code);
+                output.close();
+            });
+
+            window.uploadFile = function() {
+                const input = document.getElementById('fileInput');
+                const file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        editor.setValue(e.target.result);
+                    };
+                    reader.readAsText(file);
+                } else {
+                    alert('No file selected.');
+                }
+            };
+
+            window.saveFile = function() {
+                const code = editor.getValue();
+                const blob = new Blob([code], { type: 'text/html' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'code.html';
+                link.click();
+            };
+
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    saveFile();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        if('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js', { scope: '/' });
+        }
+    </script>
+    <script>
+        window.addEventListener('beforeunload', function(e) {
+            const message = "Are you sure you want to leave? Your file won't be saved.";
+            e.returnValue = message; // Standard for most browsers
+            return message;          // For some older browsers
+        });
+    </script>
+</body>
+</html>
