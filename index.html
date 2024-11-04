@@ -1,81 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MBD DEV Apps</title>
-    <link rel="icon" type="image/x-icon" href="https://dev.cdn.madebydanny.uk/MBDTeamLogobyDesigner.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
 </head>
 <style>
-    * {
-  box-sizing: border-box;
+    body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
 }
 
-body {
-  margin: 0;
+#loading-screen {
+    text-align: center;
 }
-.main{
-    max-width: 950px;
-    margin: auto;
+
+#loading-image {
+    width: 100px;
+    height: 100px;
+    animation: spin 1s linear infinite;
 }
-    .navbar{
-      width: 100%;
-        display: flex;
-        padding: 5px;
-        background-color: #ffcc99;
-    }
-    .header{
-        width: 100%;
-        padding: 15px;
-        background-color: #ff99ff;
-        font-size: 30px;
-        text-align: center;
-    }
-    .header p{
-        font-size: small;
-    }
-    /* Create three equal columns that floats next to each other */
-.column {
-  float: left;
-  width: 33.33%;
-  padding: 15px;
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
-a {
-    color: black;
-}
+
 </style>
 <body>
-    <div class="main">
-        <div class="navbar">
-            <a>Some apps are made with help from Microsoft Copilot</a>
-        </div>
-        <div class="header">
-        <h3>MBD DEV Apps</h3>
-        <p>This Site is in Devlopment | This is a PWA</p>
-        </div>
-        <div class="row">
-            <div style="background-color:#ffe680;color:black;" class="column">
-              <h2>Text Edit</h2>
-              <a href="/loader/index.html"><img src="/Screenshot 2024-11-03 124502.png" alt="click to open" style="width:100%"></a>
-              <a href="/loader/index.html">Open Text Edit [V1]</a> | <a href="/loader/index.html">Text Edit Plus</a> | <a href="">Downlaod From Microsoft Store</a>
-              <p>MBD Text-Edit  is a basic yet easy to use Text Editor that is free and does not save any of your data. All of this is free and will be for life. All Made By Danny</p>
-            </div>
-            
-            <div style="background-color:#66e0ff;color:black;" class="column">
-              <h2>MBD Calculate</h2>
-              <a href="/mbd-calculate/index.html"><img src="/Screenshot 2024-11-03 125838.png" alt="click to open" style="width:100%"></a>
-              <a href="/mbd-calculate/index.html">Basic Culculater</a> | <a href="/mbd-calculate/pro.html">Pro Culculater</a>
-
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-            </div>
-            
-            <div style="background-color:#ff66d9;color:black;" class="column">
-              <h2>Column</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-            </div>
-        </div>
-        <div class="navbar">
-        <h1>Privacy Policy</h1>
-        <p>MBD Team does not collect personal info that can be used against you. The only information saved is your Ip address this is saved for logs on Cloudflare servers for DDOS info.</p>
+    <div id="loading-screen">
+        <img id="loading-image" src="https://mbduk-cdn.madebydanny.uk/a28a3c50-3e92-47f6-adea-b62eccd07ecd.png" alt="Loading...">
+        <h3>Loading MBD Text Edit Plus</h3>
+        <p id="loading-text">Loading PWA</p>
     </div>
+    <script>
+        const loadingText = document.getElementById('loading-text');
+const messages = ['Loading PWA', 'Loading CSS files', 'Loading Javascript', 'Loading HTML files', 'Connecting To MBD CDN'];
+let messageIndex = 0;
+
+function changeText() {
+    loadingText.textContent = messages[messageIndex];
+    messageIndex = (messageIndex + 1) % messages.length;
+}
+
+setInterval(changeText, 700);
+
+setTimeout(() => {
+    window.location.href = 'https://text-edit.madebydanny.uk/v2-text/v2.html';
+}, 5000);
+
+    </script>
 </body>
-</div>
 </html>
