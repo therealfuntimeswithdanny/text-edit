@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading Screen</title>
+    <title>Loading MBD Text Edit</title>
+    <link rel="icon" type="image/x-icon" href="https://dev.cdn.madebydanny.uk/MBDTeamLogobyDesigner.png">
 </head>
 <style>
     body {
@@ -39,7 +40,7 @@
     </div>
     <script>
         const loadingText = document.getElementById('loading-text');
-const messages = ['Loading PWA', 'Loading CSS files', 'Loading Javascript', 'Loading HTML files', 'Connecting To MBD CDN'];
+const messages = ['Loading MBD Text Edit [V2.5 Stable]',  'Loading PWA', 'Loading CSS files', 'Loading Javascript', 'Loading HTML files', 'Connecting To MBD CDN'];
 let messageIndex = 0;
 
 function changeText() {
@@ -50,7 +51,7 @@ function changeText() {
 setInterval(changeText, 700);
 
 setTimeout(() => {
-    window.location.href = 'https://text-edit.madebydanny.uk/text-edit.html';
+    window.location.href = 'https://text-edit.madebydanny.uk/v2-text/v2.html';
 }, 5000);
 
     </script>
