@@ -229,7 +229,16 @@
     <div id="bottomToolbar"> 
         <div id="wordCount">Word Count: 0</div> 
         <p>Danny Docs | MBD DEV | Backed By Cloudflare | Icons Powerd By Fontawesome | Version 2.5 [Stable]</p>
-        <p><a href="https://github.com/therealfuntimeswithdanny/MBD-APPS">Code is open source | View On GitHub                   |</a></p>
+        <div id="repoInfo">Connecting to api.github.com and Github Pages [IAU]</div>
+
+        <script>
+            fetch('https://api.github.com/repos/therealfuntimeswithdanny/text-edit')
+                .then(response => response.json())
+                .then(data => {
+                    const lastUpdated = new Date(data.updated_at).toLocaleString();
+                    document.getElementById('repoInfo').innerText = `MBD Text Edit Plus Was Last Updated at: ${lastUpdated}`;
+                });
+        </script>
     </div>
 </body>
 </html>
